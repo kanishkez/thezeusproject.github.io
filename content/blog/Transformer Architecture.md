@@ -217,10 +217,12 @@ For example if we the start with the input ‘_I_’ itself without giving a sta
 **Masking**:  
 Even after shifting, we don’t want the decoder at position _t_ to “peek” at tokens beyond itself. So we apply a **causal mask**(upper-triangular mask of -∞ in the attention scores) that blocks connections to future positions.
 
-⎡  0   -∞   -∞   -∞ ⎤
-⎢  0    0   -∞   -∞ ⎥
-⎢  0    0    0   -∞ ⎥
-⎣  0    0    0    0 ⎦
+|   | **0** | **1** | **2** | **3** |
+|---|:------:|:------:|:------:|:------:|
+| **0** | 0 | -∞ | -∞ | -∞ |
+| **1** | 0 | 0 | -∞ | -∞ |
+| **2** | 0 | 0 | 0 | -∞ |
+| **3** | 0 | 0 | 0 | 0 |
 
 
 This matrix is added to the score during Softmax so that the tokens can only see tokens before themselves.   
