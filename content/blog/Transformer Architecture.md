@@ -8,7 +8,7 @@ Understanding the Transformer is key to understanding how LLMS work.
 Let us dive deep into the original Transformer paper: [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
 
 
-![Transformer](assets/images/0*Qb1YkJkJsh-OjoZg.png)
+![Transformer](../../assets/images/0*Qb1YkJkJsh-OjoZg.png)
 
 
 
@@ -36,7 +36,7 @@ These embeddings are then **trained using weight**s so that they learn similari
 
 For example, the word ‘_good_’ and ‘_decent_’ would have similar values and so will the words ‘_good_’ and ‘_bad_’. (even though these words are antonyms, they might be used in the same contexts a lot).
 
-![Embeddings](assets/images/5f8feea2-2e15-4ac4-9a21-fba2585c534e_720x312.png)
+![Embeddings](../../assets/images/5f8feea2-2e15-4ac4-9a21-fba2585c534e_720x312.png)
 
 
 
@@ -72,7 +72,7 @@ $PE_{(pos, \, 2i+1)} = \cos\left(\frac{pos}{10000^{\frac{2i}{d_{\text{model}}}}}
 
 So, the encoding would look like this:
 
-![Positional Encoding](assets/images/171e5243-be2a-43ed-9626-cef6a8e0a694_1814x1074.png)
+![Positional Encoding](../../assets/images/171e5243-be2a-43ed-9626-cef6a8e0a694_1814x1074.png)
 
 
 
@@ -144,7 +144,7 @@ That was pretty confusing, let’s unpack what’s actually happening:
 Attention is repeated for several iterations (called heads), depending on the number of ‘heads’ we choose, we repeat the above process that many times.  
 We then concatenate the outputs from several heads to build up the final contextual representation of the input sequence.
 
-![MultiHead Attention](assets/images/2106af83-f772-4824-9fb2-84214e2d895f_858x1036-2.png)
+![MultiHead Attention](../../assets/images/2106af83-f772-4824-9fb2-84214e2d895f_858x1036-2.png)
 
 
 
