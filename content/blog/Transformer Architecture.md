@@ -8,6 +8,9 @@ Understanding the Transformer is key to understanding how LLMS work.
 Let us dive deep into the original Transformer paper: [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
 
 
+![Transformer](assets/images/0*Qb1YkJkJsh-OjoZg.png)
+
+
 
 
 
@@ -16,7 +19,7 @@ The architecture is divided into 2 parts:
 1. Encoder
 2. Decoder
 
-## Encoder:
+## Encoder:t
 
 The Encoder is tasked with creating a **contextualized summary** of the input sequences.  
 An example input sequence is:  
@@ -33,9 +36,9 @@ These embeddings are then **trained using weight**s so that they learn similari
 
 For example, the word ‘_good_’ and ‘_decent_’ would have similar values and so will the words ‘_good_’ and ‘_bad_’. (even though these words are antonyms, they might be used in the same contexts a lot).
 
+![Embeddings](assets/images/5f8feea2-2e15-4ac4-9a21-fba2585c534e_720x312.png)
 
 
-![à®Ÿà¯‹à®•à¯ à®•à®©à¯ˆà®šà¯‡à®·à®©à¯ à®®à®±à¯ à®±à¯ à®®à¯ à®‰à®Ÿà¯  à®ªà¯Šà®¤à®¿à®¤à¯ à®¤à®²à¯ - à®…à®µà¯ˆ à®Žà®µà¯ à®µà®¾à®±à¯ à®µà¯‡à®±à¯  à®ªà®Ÿà¯ à®•à®¿à®©à¯ à®±à®©? | à® à®°à¯ à®ªà¯ˆà®Ÿà¯](https://substackcdn.com/image/fetch/$s_!SumF!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5f8feea2-2e15-4ac4-9a21-fba2585c534e_720x312.png "à®Ÿà¯‹à®•à¯ à®•à®©à¯ˆà®šà¯‡à®·à®©à¯ à®®à®±à¯ à®±à¯ à®®à¯ à®‰à®Ÿà¯  à®ªà¯Šà®¤à®¿à®¤à¯ à®¤à®²à¯ - à®…à®µà¯ˆ à®Žà®µà¯ à®µà®¾à®±à¯ à®µà¯‡à®±à¯  à®ªà®Ÿà¯ à®•à®¿à®©à¯ à®±à®©? | à® à®°à¯ à®ªà¯ˆà®Ÿà¯")
 
 Embeddings are **trained** along with the entire transformer.  
 Embeddings of **each token are stored in a matrix** of size [VxD] , where V is the vocabulary size and D is the embedding dimension. Each token ID corresponds to one row in this matrix. During training, the **loss gradients update the embeddings** alongside all other weights, refining them to capture semantic and syntactic patterns.  
@@ -69,8 +72,10 @@ $PE_{(pos, \, 2i+1)} = \cos\left(\frac{pos}{10000^{\frac{2i}{d_{\text{model}}}}}
 
 So, the encoding would look like this:
 
+![Positional Encoding](assets/images/171e5243-be2a-43ed-9626-cef6a8e0a694_1814x1074.png)
 
-![A Gentle Introduction to Positional Encoding in Transformer Models, Part 1  - MachineLearningMastery.com](https://substackcdn.com/image/fetch/$s_!a4h2!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F171e5243-be2a-43ed-9626-cef6a8e0a694_1814x1074.png "A Gentle Introduction to Positional Encoding in Transformer Models, Part 1  - MachineLearningMastery.com")
+
+
 
 Here, for each token with dimension d, the positional encoding is a **vector of all the indices**.  
 So for the token ‘_am_’ if d = 4, the positional encoding is  **[0.84,0.54,0.10,1.0]**
@@ -139,9 +144,9 @@ That was pretty confusing, let’s unpack what’s actually happening:
 Attention is repeated for several iterations (called heads), depending on the number of ‘heads’ we choose, we repeat the above process that many times.  
 We then concatenate the outputs from several heads to build up the final contextual representation of the input sequence.
 
+![MultiHead Attention](assets/images/2106af83-f772-4824-9fb2-84214e2d895f_858x1036-2.png)
 
 
-![](https://substackcdn.com/image/fetch/$s_!1gF-!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2106af83-f772-4824-9fb2-84214e2d895f_858x1036.png)
 
 
 Each head uses its own Query, Key and Value weight matrix and produces head outputs that are concatenated.
@@ -196,7 +201,14 @@ This is where **masking** and **shift-right** come into play.
 During training, the target sequence (the ground-truth output) is shifted one position to the right. This means we prepend a special token like [start token] to the sequence and move all other tokens one step forward.
 
 
-$\begin{array}{|c|c|}\hline\textbf{Decoder Input} & \textbf{Decoder Output} \\\hline\texttt{[start token]} & I \\I & love \\love & cats \\cats & \texttt{[end token]} \\\hline\end{array}$
+| **Decoder Input**     | **Decoder Output** |
+|------------------------|--------------------|
+| `[start token]`        | I                  |
+| I                      | love               |
+| love                   | cats               |
+| cats                   | `[end token]`      |
+
+
 
 This is done so that during training we create perfect pairs.
 
@@ -205,7 +217,11 @@ For example if we the start with the input ‘_I_’ itself without giving a sta
 **Masking**:  
 Even after shifting, we don’t want the decoder at position _t_ to “peek” at tokens beyond itself. So we apply a **causal mask**(upper-triangular mask of -∞ in the attention scores) that blocks connections to future positions.
 
-$\text{Mask} = \begin{bmatrix} 0 & -\infty & -\infty & -\infty \\ 0 & 0 & -\infty & -\infty \\ 0 & 0 & 0 & -\infty \\ 0 & 0 & 0 & 0 \end{bmatrix}$
+⎡  0   -∞   -∞   -∞ ⎤
+⎢  0    0   -∞   -∞ ⎥
+⎢  0    0    0   -∞ ⎥
+⎣  0    0    0    0 ⎦
+
 
 This matrix is added to the score during Softmax so that the tokens can only see tokens before themselves.   
   
