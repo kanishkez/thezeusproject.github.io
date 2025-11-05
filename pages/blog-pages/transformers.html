@@ -127,7 +127,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>
             const LESSON_ID = "transformers";
-            const MD_PATH = "../../content/blog/Transformer Architecture.md";
+            const MD_PATH = "../../content/blog/Transfomer.md";
             const PROJECTS_PATH = "../../content/projects/Transformer-implementation.md";
 
             document.addEventListener("DOMContentLoaded", () => {
@@ -154,12 +154,16 @@
                             const frontmatter = match[1];
                             content = text.substring(match.index + match[0].length);
                             const metadata = {};
-                            frontmatter.split("\n").forEach((line) => {
-                                if (line.includes(":")) {
-                                    const [key, ...valueParts] = line.split(":");
-                                    metadata[key.trim()] = valueParts.join(":").trim();
-                                }
-                            });
+                                            frontmatter.split("\n").forEach((line) => {
+                                                if (line.includes(":")) {
+                                                    const [key, ...valueParts] = line.split(":");
+                                                    // Join remainder and trim
+                                                    let val = valueParts.join(":").trim();
+                                                    // Remove surrounding single or double quotes if present
+                                                    val = val.replace(/^"(.*)"$/s, "$1").replace(/^'(.*)'$/s, "$1");
+                                                    metadata[key.trim()] = val;
+                                                }
+                                            });
                             lessonTitleEl.innerText = metadata.title || "Transformers";
                             lessonSubtitleEl.innerText = metadata.subtitle || "An overview of the Transformer architecture.";
                             contributorNameEl.innerText = metadata.author || "kanishk";
