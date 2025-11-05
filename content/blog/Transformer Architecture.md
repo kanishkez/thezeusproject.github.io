@@ -1,3 +1,4 @@
+title: Transformer Architecture Explained
 
 Author- @kanishkez on github and @kanishko7 on twitter 
 
