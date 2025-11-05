@@ -6,6 +6,12 @@ const blogs = [
     html: 'blog-pages/linear-regression.html'
   },
   {
+    id: 'transformers',
+    title: "Transformer architecture explained",
+    subtitle: "An walkthrough of the Transformer architecture — attention, encoder/decoder blocks, positional encodings and how LLMs work.",
+    html: 'blog-pages/transformers.html'
+  },
+  {
     id: 'optimizers',
     title: "Optimizers",
     subtitle: "A deep dive into the evolution of optimization algorithms in deep learning.",
